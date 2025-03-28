@@ -142,7 +142,7 @@ const ProfilePage = () => {
   const handleRemoveProfileImg = async () => {
     try {
       const response = await axios.put("/api/team/removeProfileImage", { username });
-      setProfileImg("../../../public/avatar-placeholder.png");
+      setProfileImg("/avatar-placeholder.png");
       toast.success("Profile image removed!");
       setProfileMenuOpen(false);
     } catch (error) {
@@ -182,7 +182,7 @@ const ProfilePage = () => {
         if (user.data[0].profileImg) {
           setProfileImg(user.data[0].profileImg);
         } else {
-          setProfileImg("../../../public/avatar-placeholder.png");
+          setProfileImg("/avatar-placeholder.png");
         }
         if (user.data[0].coverImg) {
           setCoverImg(user.data[0].coverImg);

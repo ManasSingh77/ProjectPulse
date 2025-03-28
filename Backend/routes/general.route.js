@@ -1,0 +1,16 @@
+import express from "express";
+import {searchDeveloper,searchTeam,sendNotification,getNotification,acceptInvite,rejectInvite,sendMessage,getMessage,getPost,createPost,getFollowingPost,follow} from "./../controllers/general.controller.js";
+const router=express.Router();
+router.post("/searchDeveloper",searchDeveloper);
+router.post("/searchTeam",searchTeam);
+router.post("/sendNotification",sendNotification);
+router.post("/getNotification",getNotification);
+router.post("/acceptInvite",acceptInvite);
+router.post("/rejectInvite",rejectInvite);
+router.post("/sendMessage",sendMessage);
+router.post("/getMessage",getMessage);
+router.post("/getPost",getPost);
+router.post("/createPost",createPost);
+router.post("/getFollowingPost",getFollowingPost);
+router.post("/follow",follow);
+export default router;

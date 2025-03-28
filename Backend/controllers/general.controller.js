@@ -229,3 +229,33 @@ export const getFollowingPost=async(req,res)=>{
     res.status(500).json({ error: 'Failed to get messages' });
   }
 }
+export const getAllDevelopers=async(req,res)=>{
+  try{
+    try {
+      const developers = await User.find({});
+      res.status(200).json(developers);
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+
+  }
+  catch(error){
+    console.error("Error getting messages:", error);
+    res.status(500).json({ error: 'Failed to get messages' });
+  }
+}
+export const getAllTeams=async(req,res)=>{
+  try{
+    try {
+      const teams = await Team.find({});
+      res.status(200).json(teams);
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+
+  }
+  catch(error){
+    console.error("Error getting messages:", error);
+    res.status(500).json({ error: 'Failed to get messages' });
+  }
+}

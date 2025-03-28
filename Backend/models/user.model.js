@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
 			required: true,
 			minLength: 6,
 		},
-		bio:{
+		bio: {
 			type: String,
 		},
 		profileImg: {
@@ -31,38 +31,43 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			default: "",
 		},
-		roleName:{
+		roleName: {
 			type: String,
 			default: "",
 		},
-		projectStatus:{
+		projectStatus: {
 			type: String,
-			default:"Not Working",
+			default: "Not Working",
 		},
-		linkedInURL:{
-			type:String,
+		linkedInURL: {
+			type: String,
 		},
-		GithubURL:{
-			type:String,
+		GithubURL: {
+			type: String,
 		},
-		XURL:{
-			type:String,
+		XURL: {
+			type: String,
 		},
 		assignedSubProjects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'SubProject' }],
-		followers: [
-			{
-				type: String,
-				default: [],
-			},
-		],
-		following: [
-			{
-				type: String,
-				default: [],
-			},
-		],
+		followers: [{
+			type: String,
+			default: [],
+		}],
+		following: [{
+			type: String,
+			default: [],
+		}],
+		specialties: {
+			type: [String],
+			validate: [arrayLimit, 'You can select up to 5 specialties.'],
+		},
 	},
+	{ timestamps: true }
 );
+
+function arrayLimit(val) {
+	return val.length <= 5;
+}
 
 const User = mongoose.model("User", userSchema);
 

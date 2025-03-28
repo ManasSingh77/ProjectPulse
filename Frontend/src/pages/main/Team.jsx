@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import Header from "../../components/Header.jsx";
 import { FaSearch } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,6 +9,18 @@ const Developer = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
   const navigate=useNavigate();
+  useEffect(() => {
+    const fetchAllDevelopers = async () => {
+      try {
+        const response = await axios.post("api/general/getAllTeams");
+        setUsers(response.data || []);
+      } catch (error) {
+        setError("Failed to load developers.");
+      }
+    };
+    fetchAllDevelopers();
+  }, []);
+
   const handleSearch = async () => {
     try {
       setError("");
@@ -44,7 +56,7 @@ const Developer = () => {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               onKeyPress={handleKeyPress} 
-              placeholder="Search for developers..."
+              placeholder="Search for teams..."
               className="w-full px-2 py-1 bg-transparent outline-none text-gray-700 placeholder-gray-400"
             />
           </div>

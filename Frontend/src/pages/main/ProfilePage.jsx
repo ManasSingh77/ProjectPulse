@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Header from "../../components/Header";
+import { FaStar } from "react-icons/fa";
 
 const ProfilePage = () => {
   const { UserName } = useParams();
@@ -29,7 +30,8 @@ const ProfilePage = () => {
   const [following, setFollowing] = useState(0);
   const [followStatus, setFollowStatus] = useState("Follow");
   const [followUser, setFollowUser] = useState("");
-  const [check, setCheck] = useState(true);
+  const [isMyProfile, setIsMyProfile] = useState(true);
+  const [specialties, setSpecialties] = useState([]);
 
   // Dropdown menu states for images
   const [coverMenuOpen, setCoverMenuOpen] = useState(false);
@@ -156,11 +158,11 @@ const ProfilePage = () => {
         setUserName(user.data.username);
         setFollowUser(user.data.username);
         setSenderName(user.data.username);
-        if (user.data.username !== UserName) {
-          setCheck(false);
-        } else {
-          setCheck(true);
-        }
+        
+        // Check if this is the user's own profile
+        const isOwnProfile = user.data.username === UserName;
+        setIsMyProfile(isOwnProfile);
+        
         user = await axios.post("/api/auth/get", { username: UserName });
         setUserName(user.data[0].username);
         setName(user.data[0].fullName);
@@ -176,6 +178,7 @@ const ProfilePage = () => {
         setXlink(user.data[0].XURL);
         setFollowers(user.data[0].followers.length);
         setFollowing(user.data[0].following.length);
+        setSpecialties(user.data[0].specialties || []);
         if (user.data[0].profileImg) {
           setProfileImg(user.data[0].profileImg);
         } else {
@@ -194,7 +197,7 @@ const ProfilePage = () => {
       }
     };
     fetchUser();
-  }, [UserName, check]);
+  }, [UserName]);
 
   return (
     <>
@@ -204,30 +207,32 @@ const ProfilePage = () => {
           {/* Cover Image Section */}
           <div className="relative">
             <img className="w-full h-52 object-cover rounded-t-lg" src={coverImg} alt="Cover Image" />
-            <div className="absolute top-2 right-2">
-              <button
-                onClick={handleCoverImgEditClick}
-                className=" bg-opacity-50 text-white p-1 rounded-full"
-              >
-                <img src="https://img.icons8.com/ios/50/menu-2.png" alt="Cover Menu" className="w-5 h-5" />
-              </button>
-              {coverMenuOpen && (
-                <div className="absolute top-10 right-2 bg-white border border-gray-200 rounded shadow-md z-10">
-                  <button
-                    onClick={() => coverImgInputRef.current && coverImgInputRef.current.click()}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  >
-                    Choose Image
-                  </button>
-                  <button
-                    onClick={handleRemoveCoverImg}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  >
-                    Remove Image
-                  </button>
-                </div>
-              )}
-            </div>
+            {isMyProfile && (
+              <div className="absolute top-2 right-2">
+                <button
+                  onClick={handleCoverImgEditClick}
+                  className="bg-opacity-50 text-white p-1 rounded-full"
+                >
+                  <img src="https://img.icons8.com/ios/50/menu-2.png" alt="Cover Menu" className="w-5 h-5" />
+                </button>
+                {coverMenuOpen && (
+                  <div className="absolute top-10 right-2 bg-white border border-gray-200 rounded shadow-md z-10">
+                    <button
+                      onClick={() => coverImgInputRef.current && coverImgInputRef.current.click()}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    >
+                      Choose Image
+                    </button>
+                    <button
+                      onClick={handleRemoveCoverImg}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    >
+                      Remove Image
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
             <input
               type="file"
               accept="image/*"
@@ -244,30 +249,32 @@ const ProfilePage = () => {
               src={profileImg}
               alt="Profile Image"
             />
-            <div className="absolute bottom-0 right-0">
-              <button
-                onClick={handleProfileImgEditClick}
-                className=" bg-opacity-50 text-white p-1 rounded-full"
-              >
-                <img src="https://img.icons8.com/ios/50/menu-2.png" alt="Profile Menu" className="w-5 h-5" />
-              </button>
-              {profileMenuOpen && (
-                <div className="absolute bottom-10 right-0 bg-white border border-gray-200 rounded shadow-md z-10">
-                  <button
-                    onClick={() => profileImgInputRef.current && profileImgInputRef.current.click()}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  >
-                    Choose Image
-                  </button>
-                  <button
-                    onClick={handleRemoveProfileImg}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                  >
-                    Remove Image
-                  </button>
-                </div>
-              )}
-            </div>
+            {isMyProfile && (
+              <div className="absolute bottom-0 right-0">
+                <button
+                  onClick={handleProfileImgEditClick}
+                  className="bg-opacity-50 text-white p-1 rounded-full"
+                >
+                  <img src="https://img.icons8.com/ios/50/menu-2.png" alt="Profile Menu" className="w-5 h-5" />
+                </button>
+                {profileMenuOpen && (
+                  <div className="absolute bottom-10 right-0 bg-white border border-gray-200 rounded shadow-md z-10">
+                    <button
+                      onClick={() => profileImgInputRef.current && profileImgInputRef.current.click()}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    >
+                      Choose Image
+                    </button>
+                    <button
+                      onClick={handleRemoveProfileImg}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                    >
+                      Remove Image
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
             <input
               type="file"
               accept="image/*"
@@ -285,7 +292,7 @@ const ProfilePage = () => {
                   {name}
                 </div>
                 <div>
-                  {!check && (
+                  {!isMyProfile && (
                     <button
                       onClick={handleFollowClick}
                       className={`px-4 py-2 text-white font-semibold rounded-full shadow-md transition-transform duration-300 ease-in-out ${
@@ -302,7 +309,7 @@ const ProfilePage = () => {
               </div>
             </div>
             <div className="ml-48">
-              {check ? (
+              {isMyProfile ? (
                 <div className="rounded-full hover:bg-gray-200 w-10 h-10 flex items-center justify-center">
                   <img onClick={handleClick} className="h-6 w-6 cursor-pointer" src="https://www.svgrepo.com/show/502644/edit.svg" alt="Edit Icon" />
                 </div>
@@ -322,45 +329,65 @@ const ProfilePage = () => {
             {lLink && (
               <div className="flex items-center mb-2">
                 <img className="h-10" src="../../../public/icons8-linkedin.svg" alt="LinkedIn" />
-                <a href={lLink}>{lName}</a>
+                <a href={lLink} className="hover:text-yellow-600">{lName}</a>
               </div>
             )}
             {gLink && (
               <div className="flex items-center mb-2">
                 <img className="h-10" src="../../../public/icons8-github.svg" alt="GitHub" />
-                <a href={gLink}>{gName}</a>
+                <a href={gLink} className="hover:text-yellow-600">{gName}</a>
               </div>
             )}
             {XLink && (
               <div className="flex items-center ml-1 mb-5">
                 <img className="h-8 mr-1" src="../../../public/x-twitter-brands-solid.svg" alt="X" />
-                <a href={XLink}>{XName}</a>
+                <a href={XLink} className="hover:text-yellow-600">{XName}</a>
               </div>
             )}
           </div>
         </div>
-        <div className="w-80 border-4 border-yellow-400 border-solid rounded-lg">
-          <div className="flex font-bold text-lg justify-center mt-2"> TEAM DETAILS</div>
-          <div className="flex">
-            <div className="font-semibold ml-2 mt-2"> TEAM NAME:</div> 
-            <div className="mt-2 ml-2">{team ? team : 'NOT IN A TEAM'}</div>
+
+        <div className="flex flex-col space-y-4">
+          <div className="w-80 border-4 border-yellow-400 border-solid rounded-lg">
+            <div className="flex font-bold text-lg justify-center mt-2">TEAM DETAILS</div>
+            <div className="flex">
+              <div className="font-semibold ml-2 mt-2">TEAM NAME:</div> 
+              <div className="mt-2 ml-2">{team ? team : 'NOT IN A TEAM'}</div>
+            </div>
+            <div className="flex">
+              <div className="font-semibold ml-2 mt-2">TEAM POSITION:</div> 
+              <div className="mt-2 ml-2">{position ? position : 'NA'}</div>
+            </div>
+            <div className="flex">
+              <div className="font-semibold ml-2 mt-2">STATUS:</div> 
+              <div className="mt-2 ml-2">{status}</div>
+            </div>
+            <div className="flex">
+              <div className="font-semibold ml-2 mt-2">FOLLOWERS:</div> 
+              <div className="mt-2 ml-2">{followers}</div>
+            </div>
+            <div className="flex">
+              <div className="font-semibold ml-2 mt-2">FOLLOWING:</div> 
+              <div className="mt-2 ml-2">{following}</div>
+            </div>
           </div>
-          <div className="flex">
-            <div className="font-semibold ml-2 mt-2"> TEAM POSITION:</div> 
-            <div className="mt-2 ml-2">{position ? position : 'NA'}</div>
-          </div>
-          <div className="flex">
-            <div className="font-semibold ml-2 mt-2"> STATUS:</div> 
-            <div className="mt-2 ml-2">{status}</div>
-          </div>
-          <div className="flex">
-            <div className="font-semibold ml-2 mt-2"> FOLLOWERS:</div> 
-            <div className="mt-2 ml-2">{followers}</div>
-          </div>
-          <div className="flex">
-            <div className="font-semibold ml-2 mt-2"> FOLLOWING:</div> 
-            <div className="mt-2 ml-2">{following}</div>
-          </div>
+
+          {specialties.length > 0 && (
+            <div className="w-80 border-4 border-yellow-400 border-solid rounded-lg">
+              <div className="flex font-bold text-lg justify-center mt-2">SPECIALTIES</div>
+              <div className="flex flex-wrap p-4 gap-2">
+                {specialties.map((specialty, index) => (
+                  <div 
+                    key={index}
+                    className="flex items-center bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium"
+                  >
+                    <FaStar className="mr-1 text-yellow-500" />
+                    {specialty}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

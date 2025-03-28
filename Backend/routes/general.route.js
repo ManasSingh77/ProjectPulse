@@ -1,5 +1,5 @@
 import express from "express";
-import {searchDeveloper,searchTeam,sendNotification,getNotification,acceptInvite,rejectInvite,sendMessage,getMessage,getPost,createPost,getFollowingPost,follow} from "./../controllers/general.controller.js";
+import {searchDeveloper,searchTeam,sendNotification,getNotification,acceptInvite,rejectInvite,sendMessage,getMessage,getPost,createPost,getFollowingPost,follow,getAllDevelopers,getAllTeams} from "./../controllers/general.controller.js";
 const router=express.Router();
 router.post("/searchDeveloper",searchDeveloper);
 router.post("/searchTeam",searchTeam);
@@ -13,4 +13,6 @@ router.post("/getPost",getPost);
 router.post("/createPost",createPost);
 router.post("/getFollowingPost",getFollowingPost);
 router.post("/follow",follow);
+router.post('/getAllDevelopers', getAllDevelopers);
+router.post('/getAllTeams', getAllTeams);
 export default router;

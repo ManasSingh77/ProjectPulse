@@ -129,30 +129,38 @@ export const leftTeam=async(req,res)=>{
             res.status(500).json({ error: "Internal Server Error" });
     }
 }
-export const updateUser=async(req,res)=>{
-    try{
-        const username=req.body.username;
-        const {fullName,bio,linkedInName,linkedInURL,GitHubName,GitHubURL,xName,xUrl }=req.body;
-        const user=await User.findOne({username:username});
-        console.log(bio);
-        if(!user){
-            return res.status(404).send({ error: 'User not found' });
+export const updateUser = async (req, res) => {
+    try {
+        const { username, fullName, bio, linkedInURL, GitHubURL, xUrl, specialities } = req.body;
+        
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).send({ error: "User not found" });
         }
-        user.fullName=fullName || user.fullName;
+
+        user.fullName = fullName || user.fullName;
         user.bio = bio || user.bio;
         user.linkedInURL = linkedInURL || user.linkedInURL;
         user.GithubURL = GitHubURL || user.GithubURL;
         user.XURL = xUrl || user.XURL;
-        console.log(user);
+
+        // Update specialities (only if provided & within limit)
+        if (specialities) {
+            if (!Array.isArray(specialities) || specialities.length > 5) {
+                return res.status(400).json({ error: "You can add up to 5 specialties only." });
+            }
+            user.specialties = specialities;
+        }
         await user.save();
-        user.password=null;
+        user.password = null;
+
         return res.status(200).json(user);
+    } catch (error) {
+        console.log("Error in updateUser controller:", error);
+        res.status(500).json({ error: "Internal Server Error" });
     }
-    catch{
-        console.log("Error in updateUser controller");
-		res.status(500).json({ error: "Internal Server Error" });
-    }
-}
+};
 export const getTeam=async(req,res)=>{
     try{
         const teamName=req.body.teamName;

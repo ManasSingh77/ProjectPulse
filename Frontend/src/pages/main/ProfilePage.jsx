@@ -24,8 +24,8 @@ const ProfilePage = () => {
   const [gLink, setGlink] = useState("");
   const [XName, setXname] = useState("");
   const [XLink, setXlink] = useState("");
-  const [profileImg, setProfileImg] = useState("../../../public/avatar-placeholder.png");
-  const [coverImg, setCoverImg] = useState("../../../public/cover.png");
+  const [profileImg, setProfileImg] = useState("/avatar-placeholder.png");
+  const [coverImg, setCoverImg] = useState("/public/cover.png");
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
   const [followStatus, setFollowStatus] = useState("Follow");

@@ -94,7 +94,7 @@ const Developer = () => {
               className="flex items-center bg-gradient-to-r from-yellow-200 to-yellow-300 shadow-lg rounded-lg p-4 cursor-pointer hover:shadow-xl transition duration-200"
             >
               <img
-                src={user.profileImg || "../../../public/avatar-placeholder.png"}
+                src={user.profileImg || "/avatar-placeholder.png"}
                 alt="Profile"
                 className="w-12 h-12 rounded-full border-2 border-yellow-400 mr-4"
               />

@@ -328,19 +328,19 @@ const ProfilePage = () => {
             {(lLink || gLink || XLink) && <p className="font-semibold mt-2 mb-2"> Other Profiles:</p>}
             {lLink && (
               <div className="flex items-center mb-2">
-                <img className="h-10" src="../../../public/icons8-linkedin.svg" alt="LinkedIn" />
+                <img className="h-10" src="/icons8-linkedin.svg" alt="LinkedIn" />
                 <a href={lLink} className="hover:text-yellow-600">{lName}</a>
               </div>
             )}
             {gLink && (
               <div className="flex items-center mb-2">
-                <img className="h-10" src="../../../public/icons8-github.svg" alt="GitHub" />
+                <img className="h-10" src="/icons8-github.svg" alt="GitHub" />
                 <a href={gLink} className="hover:text-yellow-600">{gName}</a>
               </div>
             )}
             {XLink && (
               <div className="flex items-center ml-1 mb-5">
-                <img className="h-8 mr-1" src="../../../public/x-twitter-brands-solid.svg" alt="X" />
+                <img className="h-8 mr-1" src="/x-twitter-brands-solid.svg" alt="X" />
                 <a href={XLink} className="hover:text-yellow-600">{XName}</a>
               </div>
             )}
